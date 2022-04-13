@@ -1,0 +1,86 @@
+CREATE TABLE forum.instrument (
+                instrumentName VARCHAR NOT NULL,
+                pitch VARCHAR NOT NULL,
+                CONSTRAINT instrumentname PRIMARY KEY (instrumentName)
+);
+
+
+CREATE TABLE forum.address (
+                addressID INTEGER NOT NULL,
+                number INTEGER NOT NULL,
+                street1 VARCHAR NOT NULL,
+                street2 VARCHAR NOT NULL,
+                city VARCHAR NOT NULL,
+                state VARCHAR NOT NULL,
+                telephone INTEGER NOT NULL,
+                zipCode INTEGER NOT NULL,
+                CONSTRAINT addressid PRIMARY KEY (addressID)
+);
+
+
+CREATE TABLE forum.musician (
+                SSN INTEGER NOT NULL,
+                name VARCHAR NOT NULL,
+                CONSTRAINT ssn PRIMARY KEY (SSN)
+);
+
+
+CREATE TABLE forum.album (
+                albumID INTEGER NOT NULL,
+                title VARCHAR NOT NULL,
+                releaseDate INTEGER NOT NULL,
+                format VARCHAR NOT NULL,
+                age INTEGER NOT NULL,
+                CONSTRAINT albumid PRIMARY KEY (albumID)
+);
+
+
+CREATE TABLE forum.song (
+                name VARCHAR NOT NULL,
+                length INTEGER NOT NULL,
+                CONSTRAINT name PRIMARY KEY (name)
+);
+
+
+ALTER TABLE forum.musician ADD CONSTRAINT instrument_musician_fk
+FOREIGN KEY (name)
+REFERENCES forum.instrument (instrumentName)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE forum.musician ADD CONSTRAINT address_musician_fk
+FOREIGN KEY (SSN)
+REFERENCES forum.address (addressID)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+/*
+Warning: Column types mismatch in the following column mapping(s):
+        SSN: INTEGER -- name: VARCHAR
+*/
+ALTER TABLE forum.song ADD CONSTRAINT musician_song_fk
+FOREIGN KEY (name)
+REFERENCES forum.musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+/*
+Warning: Column types mismatch in the following column mapping(s):
+        SSN: INTEGER -- name: VARCHAR
+*/
+ALTER TABLE forum.song ADD CONSTRAINT musician_song_fk1
+FOREIGN KEY (name)
+REFERENCES forum.musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE forum.album ADD CONSTRAINT musician_album_fk
+FOREIGN KEY (albumID)
+REFERENCES forum.musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
